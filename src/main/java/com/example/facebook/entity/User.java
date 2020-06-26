@@ -1,11 +1,11 @@
 package com.example.facebook.entity;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +29,42 @@ public class User implements UserDetails {
 
     @Column(name = "age", nullable = false)
     private Integer age;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
+    @ManyToMany
+    private Set<Role> authorities;
+
+    @OneToOne
+    private Profile profile;
+
+    @OneToMany
+    private Set<FriendRequest> friendRequests;
+
+    @OneToMany
+    private Set<Image> images;
+
+    @ManyToMany
+    private Set<User> friends;
+
+    @ManyToMany
+    private Set<User> blockedUsers;
+
+    @Column(name = "register_date")
+    private Date registerDate;
+
+    @OneToMany
+    private Set<Post> posts;
+
+    @ManyToMany
+    private Set<Post> likedPosts;
+
+    @ManyToMany
+    private Set<Post> sharedPosts;
+
+    @OneToMany
+    private Set<Post> comments;
 
     public User() {
 
@@ -78,9 +114,105 @@ public class User implements UserDetails {
         this.age = age;
     }
 
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Set<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(Set<Post> likedPosts) {
+        this.likedPosts = likedPosts;
+    }
+
+    public Set<Post> getSharedPosts() {
+        return sharedPosts;
+    }
+
+    public void setSharedPosts(Set<Post> sharedPosts) {
+        this.sharedPosts = sharedPosts;
+    }
+
+    public Set<Post> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Post> comments) {
+        this.comments = comments;
+    }
+
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public void setAuthority(Set<Role> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Set<FriendRequest> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public void setFriendRequests(Set<FriendRequest> friendRequests) {
+        this.friendRequests = friendRequests;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
+
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public Set<User> getBlockedUsers() {
+        return blockedUsers;
+    }
+
+    public void setBlockedUsers(Set<User> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
@@ -90,7 +222,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return firstName;
     }
 
     @Override
