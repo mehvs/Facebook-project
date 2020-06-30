@@ -22,12 +22,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User register(RegisterDTO registerDTO) {
         if (!registerDTO.getPassword().equals(registerDTO.getPasswordRepeat())) {
-            throw new IllegalArgumentException("Passwords do not match");
+            throw new IllegalArgumentException("Passwords do not match!");
         }
 
         User user = new User();
+        if (registerDTO.getAge() < 14) {
+            throw new IllegalArgumentException("You are too young!");
+        }
         user.setFirstName(registerDTO.getFirstName());
+        user.setLastName(registerDTO.getLastName());
+        user.setAge(registerDTO.getAge());
         user.setPassword(registerDTO.getPassword());
+        user.setEmail(registerDTO.getEmail());
 
         userRepository.save(user);
         return user;

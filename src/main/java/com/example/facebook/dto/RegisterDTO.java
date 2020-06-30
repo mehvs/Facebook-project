@@ -18,7 +18,6 @@ public class RegisterDTO {
     @NotBlank
     private String password;
 
-
     @NotBlank
     private String passwordRepeat;
 
