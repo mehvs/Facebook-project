@@ -36,7 +36,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .exceptionHandling().accessDeniedPage("/unauthorized")
                 .and()
-                    .csrf().disable();
-
+                    .csrf().disable()
+                    .rememberMe()
+                    .rememberMeParameter("remember")
+                    .key("f6d042be-bdfb-11ea-b3de-0242ac130004")
+                    .userDetailsService(userService)
+                    .rememberMeCookieName("rememberMe")
+                    .tokenValiditySeconds(86400);
     }
 }
