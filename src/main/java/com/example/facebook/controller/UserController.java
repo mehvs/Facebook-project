@@ -24,7 +24,7 @@ public class UserController extends BaseController {
         return "register.html";
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ModelAndView registerUser(@ModelAttribute RegisterDTO registerDTO){
 
         try {
