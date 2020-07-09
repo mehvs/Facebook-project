@@ -24,7 +24,7 @@ public class UserController extends BaseController {
     }
 
     @PreAuthorize("!isAuthenticated()")
-    @GetMapping
+    @GetMapping("/")
     public ModelAndView login() {
         return send("login");
     }
@@ -52,7 +52,7 @@ public class UserController extends BaseController {
             return new ModelAndView("register-error.html");
         }
 
-        return new ModelAndView("profile.html");
+        return new ModelAndView("profile");
     }
 
     @PreAuthorize("isAuthenticated()")
