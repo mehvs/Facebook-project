@@ -1,7 +1,7 @@
 package com.example.facebook.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -19,7 +19,7 @@ public class Post {
     private String post;
 
     @Column(name = "post_date", nullable = false)
-    private Date postDate;
+    private LocalDateTime postDate;
 
     @ManyToOne(targetEntity = Post.class, optional = false)
     private Post parent;
@@ -60,11 +60,11 @@ public class Post {
         this.post = post;
     }
 
-    public Date getPostDate() {
+    public LocalDateTime getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Date postDate) {
+    public void setPostDate(LocalDateTime postDate) {
         this.postDate = postDate;
     }
 
