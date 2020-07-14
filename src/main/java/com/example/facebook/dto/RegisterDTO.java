@@ -1,6 +1,5 @@
 package com.example.facebook.dto;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 public class RegisterDTO {
 
@@ -22,7 +21,7 @@ public class RegisterDTO {
     @NotBlank
     private String passwordRepeat;
 
-    private Date birthday;
+    private String birthday;
 
     public RegisterDTO() {
     }
@@ -75,11 +74,11 @@ public class RegisterDTO {
         this.passwordRepeat = passwordRepeat;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 }

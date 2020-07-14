@@ -11,6 +11,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import sun.plugin.dom.html.HTMLBodyElement;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Service
@@ -41,6 +46,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAge(registerDTO.getAge());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
+        user.setActive(false);
+        user.setRegisterDate(new Date());
 
         userRepository.save(user);
         return user;
@@ -80,5 +87,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
         return user;
     }
+
+
+
 }
 

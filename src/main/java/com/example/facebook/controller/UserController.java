@@ -43,7 +43,7 @@ public class UserController extends BaseController {
 
     @PreAuthorize("!isAuthenticated()")
     @PostMapping("/register")
-    public ModelAndView registerUser(@ModelAttribute RegisterDTO registerDTO){
+    public ModelAndView registerUser(@ModelAttribute("user") RegisterDTO registerDTO){
 
         try {
             userService.register(registerDTO);
@@ -52,7 +52,7 @@ public class UserController extends BaseController {
             return new ModelAndView("register-error.html");
         }
 
-        return new ModelAndView("profile");
+        return new ModelAndView("profile.html");
     }
 
     @PreAuthorize("isAuthenticated()")
