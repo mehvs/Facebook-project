@@ -30,6 +30,9 @@ public class User implements UserDetails {
     @Column(name = "age", nullable = false)
     private Integer age;
 
+    @Column(name = "birthday")
+    private Date birthday;
+
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
@@ -240,6 +243,14 @@ public class User implements UserDetails {
 
     public void setBlockedBy(Set<User> blockedBy) {
         this.blockedBy = blockedBy;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     @Override

@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setEmail(registerDTO.getEmail());
         user.setActive(false);
         user.setRegisterDate(new Date());
+        user.setBirthday(formatBirthday(registerDTO));
 
         userRepository.save(user);
         return user;
@@ -88,7 +89,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
-
+    public Date formatBirthday(RegisterDTO registerDTO) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String birthday = registerDTO.getBirthday();
+        try {
+            return format.parse(birthday);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 
