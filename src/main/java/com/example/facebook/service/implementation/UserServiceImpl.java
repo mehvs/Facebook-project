@@ -4,6 +4,7 @@ import com.example.facebook.dto.RegisterDTO;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.UserRepository;
 import com.example.facebook.service.contract.UserService;
+import com.mysql.cj.exceptions.PasswordExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,6 +50,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findFirstByEmail(email).
                 orElseThrow(() -> new IllegalArgumentException("User not found; with username: " + email));
+
+        return user;
+    }
+
+    public UserDetails loadUserByPass(String password) throws PasswordExpiredException {
+        User user = userRepository.findFirstByPassword(password).orElseThrow(() -> new IllegalArgumentException("Invalid password"));
 
         return user;
     }
