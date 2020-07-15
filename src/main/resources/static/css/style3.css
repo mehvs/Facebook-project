@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+#container {
+    background-color: #fcfcfc;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 7%;
+    padding-bottom: 10%;
+    border-width:5px;
+    border-style:outset;
+}
+h1 {
+    width: 45%;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 43px;
+}
+input {
+    margin-top: 2%;
+    border: 1px solid;
+    border-radius: 4px;
+    width: 30%;
+    height: 28px;
+}
+#innerContainer {
+    margin-left: 5%;
+}
+#button {
+    margin-top: 1%;
+    border: 1px solid;
+    border-radius: 6px;
+    width: 20%;
+    height: 28px;
+    background-color: #fff;
+}
+#add {
+    position: absolute;
+    background-color: darkgray;
+    top: 20%;
+    right: 27%;
+    width: 20%;
+    height: 13em;
+}
+#add p {
+    text-align: center;
+    margin-top: 30%;
+}
