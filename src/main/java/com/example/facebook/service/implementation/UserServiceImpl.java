@@ -1,5 +1,6 @@
 package com.example.facebook.service.implementation;
 
+import com.example.facebook.dto.ChangeProfileDetailsDTO;
 import com.example.facebook.dto.RegisterDTO;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.UserRepository;
@@ -11,6 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Service
@@ -41,6 +47,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAge(registerDTO.getAge());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
+        user.setActive(false);
+        user.setRegisterDate(new Date());
+        user.setBirthday(formatBirthday(registerDTO));
 
         userRepository.save(user);
         return user;
@@ -52,6 +61,43 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 orElseThrow(() -> new IllegalArgumentException("User not found; with username: " + email));
 
         return user;
+    }
+
+    @Override
+    public User changeDetails(ChangeProfileDetailsDTO changeProfileDetailsDTO, String email) {
+        User user = userRepository.findFirstByEmail(email).
+                orElseThrow(() -> new IllegalArgumentException("User not found; with username: " + email));
+
+
+        if (!changeProfileDetailsDTO.getCurrentPassword().equals(user.getPassword() )) {
+            throw new IllegalArgumentException("Password is incorrect!");
+        }else{
+            if (changeProfileDetailsDTO.getNewPassword() != null
+                    && !changeProfileDetailsDTO.getNewPassword().equals("")
+                    && changeProfileDetailsDTO.getNewPassword().equals(changeProfileDetailsDTO.getNewPasswordRepeat())) {
+                user.setPassword(passwordEncoder.encode(changeProfileDetailsDTO.getNewPassword()));
+            }
+
+        }
+
+        user.setFirstName(changeProfileDetailsDTO.getFirstName());
+        user.setLastName(changeProfileDetailsDTO.getLastName());
+        user.setAge(changeProfileDetailsDTO.getAge());
+        user.setPassword(passwordEncoder.encode(changeProfileDetailsDTO.getNewPassword()));
+        user.setEmail(changeProfileDetailsDTO.getEmail());
+
+        userRepository.save(user);
+        return user;
+    }
+
+    public Date formatBirthday(RegisterDTO registerDTO) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String birthday = registerDTO.getBirthday();
+        try {
+            return format.parse(birthday);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public UserDetails loadUserByPass(String password) throws PasswordExpiredException {

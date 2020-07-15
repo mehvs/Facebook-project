@@ -25,12 +25,18 @@ public class Post {
     private Post parent;
 
     @ManyToMany
+    @JoinTable(name = "post_users",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
     private Set<User> likes;
 
     @ManyToMany
+    @JoinTable(name = "post_users",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
     private Set<User> shares;
 
-    @OneToMany
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     private Set<Post> comments;
 
     public Post() {

@@ -13,6 +13,9 @@ public class Image {
     @Column
     private String url;
 
+    @ManyToOne(targetEntity = User.class, optional = false)
+    private User user;
+
     public Image() {
     }
 
@@ -30,5 +33,13 @@ public class Image {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
