@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setActive(false);
         user.setRegisterDate(new Date());
         user.setBirthday(formatBirthday(registerDTO));
+        user.setAuthorities();
 
         userRepository.save(user);
         return user;

@@ -26,7 +26,7 @@ public class UserController extends BaseController {
     @PreAuthorize("!isAuthenticated()")
     @GetMapping("/")
     public ModelAndView login() {
-        return send("login");
+        return send("loginForm");
     }
 
     @PreAuthorize("isAuthenticated()")
