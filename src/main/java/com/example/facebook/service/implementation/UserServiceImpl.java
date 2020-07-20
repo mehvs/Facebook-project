@@ -52,5 +52,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return user;
     }
+
+    public User getUser(String email){
+        User user = userRepository.findFirstByEmail(email).
+                orElseThrow(() -> new IllegalArgumentException("User not found; with username: " + email));
+
+        return user;
+    }
 }
 

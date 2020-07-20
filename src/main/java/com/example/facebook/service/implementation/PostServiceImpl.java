@@ -17,8 +17,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void createPost(PostDTO postDTO) {
+    public void createPost(PostDTO postDTO, User user) {
         Post newPost = new Post();
         newPost.setPost(postDTO.getPost());
+        newPost.setPoster(user);
+        postRepository.save(newPost);
     }
 }
