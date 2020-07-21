@@ -43,16 +43,15 @@ public class UserController extends BaseController {
 
     @PreAuthorize("!isAuthenticated()")
     @PostMapping("/register")
-    public ModelAndView registerUser(@ModelAttribute("user") RegisterDTO registerDTO){
+    public ModelAndView registerUser(@ModelAttribute("user") RegisterDTO registerDTO) {
 
         try {
             userService.register(registerDTO);
-        }
-        catch (IllegalArgumentException exception) {
-            return new ModelAndView("register-error.html");
+        } catch (IllegalArgumentException exception) {
+            return new ModelAndView("errors/register-error");
         }
 
-        return new ModelAndView("profile.html");
+        return new ModelAndView("profile");
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -65,7 +64,6 @@ public class UserController extends BaseController {
             return new ModelAndView("");
         }
 
-        return new ModelAndView("profile.html");
+        return new ModelAndView("profile");
     }
-
 }
