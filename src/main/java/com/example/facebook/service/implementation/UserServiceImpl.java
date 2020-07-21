@@ -8,6 +8,7 @@ import com.example.facebook.repository.UserRepository;
 import com.example.facebook.service.contract.UserService;
 import com.mysql.cj.exceptions.PasswordExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,6 +53,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAge(registerDTO.getAge());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
+
+        user.getProfile().getProfileImage().setUrl("https://www.pinpng.com/pngs/m/341-3415688_no-avatar-png-transparent-png.png");
+
         user.setActive(true);
         user.setRegisterDate(new Date());
         user.setBirthday(formatBirthday(registerDTO));
@@ -59,6 +63,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getUserRole());
         user.setAuthorities(roles);
+
 
         userRepository.save(user);
         return user;
@@ -119,5 +124,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return user;
     }
+
 }
 
