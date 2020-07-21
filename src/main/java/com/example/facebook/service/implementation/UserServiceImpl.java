@@ -57,9 +57,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = getUser(email);
+        return user;
+    }
+
+    public User getUser(String email) {
         User user = userRepository.findFirstByEmail(email).
                 orElseThrow(() -> new IllegalArgumentException("User not found; with username: " + email));
-
         return user;
     }
 
@@ -102,6 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public UserDetails loadUserByPass(String password) throws PasswordExpiredException {
         User user = userRepository.findFirstByPassword(password).orElseThrow(() -> new IllegalArgumentException("Invalid password"));
+
 
         return user;
     }
