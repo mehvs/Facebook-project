@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAge(registerDTO.getAge());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
+        user.getProfile().getProfileImage().setUrl("https://www.pinpng.com/pngs/m/341-3415688_no-avatar-png-transparent-png.png");
 
         userRepository.save(user);
         return user;

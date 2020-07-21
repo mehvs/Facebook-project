@@ -5,8 +5,9 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.example.facebook.dto.ImageUploadDTO;
-import com.example.facebook.entity.Profile;
+import com.example.facebook.entity.User;
 import com.example.facebook.repository.ProfileRepository;
+import com.example.facebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 @Service
 public class ImageUploadService {
 
@@ -25,12 +27,11 @@ public class ImageUploadService {
     private static final String ACCESS_TOKEN = " ";
     private DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
     private DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ImageUploadService(ProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-
+    public ImageUploadService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public void uploadImage(MultipartFile image) throws IOException {
@@ -44,14 +45,13 @@ public class ImageUploadService {
         return fileName.toString();
     }
 
-    public void uploadToDropbox(ImageUploadDTO imageUploadDTO) throws DbxException, IOException {
+    public void setProfilePicture(ImageUploadDTO imageUploadDTO) throws DbxException, IOException {
 
         InputStream in = imageUploadDTO.getImage().getInputStream();
 
         client.files().uploadBuilder("/" + getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage())).uploadAndFinish(in);
 
-
-        saveUrlToDatabase(imageUploadDTO);
+        setProfilePictureUrl(imageUploadDTO);
 
     }
 
@@ -68,7 +68,7 @@ public class ImageUploadService {
             username = principal.toString();
 
         }
-
+        System.out.println(username);
         return username;
     }
 
@@ -86,10 +86,20 @@ public class ImageUploadService {
         return directUrl;
     }
 
-    public Profile saveUrlToDatabase(ImageUploadDTO imageUploadDTO) {
-        Profile profile = new Profile();
-        profile.getProfileImage().setUrl(getDirectLink(imageUploadDTO));
-        return profileRepository.save(profile);
+    public User findByEmail() {
+        User user = userRepository.findFirstByEmail(getCurrentLoggedUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found" + getCurrentLoggedUsername()));
+        ;
+
+        return user;
+    }
+
+    public void setProfilePictureUrl(ImageUploadDTO imageUploadDTO) {
+        User user = findByEmail();
+
+        user.getProfile().getProfileImage().setUrl(getDirectLink(imageUploadDTO));
+
+        userRepository.save(user);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.facebook.controller;
 
+import com.dropbox.core.DbxException;
 import com.example.facebook.dto.ImageUploadDTO;
 import com.example.facebook.service.implementation.ImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,9 @@ public class ProfileController extends BaseController{
     }
 
     @PostMapping("/profile")
-    public ModelAndView setProfilePicture(@ModelAttribute ImageUploadDTO imageUploadDTO) throws IOException {
+    public ModelAndView setProfilePicture(@ModelAttribute ImageUploadDTO imageUploadDTO) throws IOException, DbxException {
         imageUploadService.uploadImage(imageUploadDTO.getImage());
+        imageUploadService.setProfilePicture(imageUploadDTO);
         return redirect("profile");
     }
 
