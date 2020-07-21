@@ -2,11 +2,13 @@ package com.example.facebook.service.implementation;
 
 import com.example.facebook.dto.ChangeProfileDetailsDTO;
 import com.example.facebook.dto.RegisterDTO;
+import com.example.facebook.entity.Role;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.UserRepository;
 import com.example.facebook.service.contract.UserService;
 import com.mysql.cj.exceptions.PasswordExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,16 +19,20 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private final RoleServiceImpl roleService;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleServiceImpl roleService, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.roleService = roleService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -47,9 +53,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAge(registerDTO.getAge());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
-        user.setActive(false);
+
+        user.getProfile().getProfileImage().setUrl("https://www.pinpng.com/pngs/m/341-3415688_no-avatar-png-transparent-png.png");
+
+        user.setActive(true);
         user.setRegisterDate(new Date());
         user.setBirthday(formatBirthday(registerDTO));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.getUserRole());
+        user.setAuthorities(roles);
+
 
         userRepository.save(user);
         return user;
@@ -110,5 +124,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return user;
     }
+
 }
 
