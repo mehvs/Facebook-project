@@ -16,4 +16,6 @@ public class ImageUploadDTO {
     public void setImage(MultipartFile image) {
         this.image = image;
     }
+
 }
+

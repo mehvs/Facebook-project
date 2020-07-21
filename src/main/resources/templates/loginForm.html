@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+<!--    <link rel="stylesheet" type="text/css" href="../static/css/style2.css">-->
+    <link th:href="@{css/style2.css}" rel="stylesheet" />
+</head>
+<body>
+    <div id="container">
+        <h1>Влезте в акаунта си</h1>
+        <div id="formHolder">
+            <form method="post" action="/login">
+                <label>Username or email:</label>
+                <p><input class="sizeChange" type="text" placeholder="Input username or email" name="email"></p>
+                <div id="pass">
+                    <label>Password</label>
+                    <p><input class="sizeChange" type="password" placeholder="Input password" name="password"></p>
+                </div>
+                <p id="checkbox"><input type="checkbox" name="remember"> Remember me</p>
+                <input id="button" type="submit" value="Login">
+            </form>
+            <div id="links">
+                <p><a href="">Forgot password?</a></p>
+                <p><a href="">Don't have an account yet? Sign up <p>now.</p> </a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,7 +6,6 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.example.facebook.dto.ImageUploadDTO;
 import com.example.facebook.entity.User;
-import com.example.facebook.repository.ProfileRepository;
 import com.example.facebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,10 +34,12 @@ public class ImageUploadService {
         this.userRepository = userRepository;
     }
 
+
     public void uploadImage(MultipartFile image) throws IOException {
         Path filepath = Paths.get("", image.getOriginalFilename());
         image.transferTo(filepath);
     }
+
 
     public String getFileName(MultipartFile image) {
         Path filepath = Paths.get("", image.getOriginalFilename());
@@ -103,3 +105,4 @@ public class ImageUploadService {
     }
 
 }
+
