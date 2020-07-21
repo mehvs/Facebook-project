@@ -1,6 +1,6 @@
 package com.example.facebook.dto;
+
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 public class RegisterDTO {
 
