@@ -12,17 +12,19 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
-    private User requester;
-
-    @ManyToOne(targetEntity = User.class, optional = false)
-    private User requested;
-
-    @Column(name = "status")
+    @Enumerated
     private FriendRequestStatus status;
 
     public FriendRequest() {
+        this.id = id;
+        this.status = status;
     }
+
+    @ManyToOne(targetEntity = User.class, optional = false, fetch = FetchType.LAZY)
+    private User requester;
+
+    @ManyToOne(targetEntity = User.class, optional = false, fetch = FetchType.LAZY)
+    private User requested;
 
     public Long getId() {
         return id;

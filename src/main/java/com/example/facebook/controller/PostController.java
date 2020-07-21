@@ -5,12 +5,14 @@ import com.example.facebook.entity.User;
 import com.example.facebook.service.implementation.PostServiceImpl;
 import com.example.facebook.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 
+@Controller
 public class PostController {
 
     private final PostServiceImpl postService;
@@ -24,7 +26,8 @@ public class PostController {
 
     @PostMapping("/createPost")
     public ModelAndView createPost(@ModelAttribute PostDTO postDTO, Principal principal){
-        User user = userService.getUser(principal.getName());
+        User user = (User) userService.loadUserByUsername(principal.getName());
+        postService.createPost(postDTO,user);
         return new ModelAndView();
     }
 }

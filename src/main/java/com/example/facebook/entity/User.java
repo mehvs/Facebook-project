@@ -30,41 +30,60 @@ public class User implements UserDetails {
     @Column(name = "age", nullable = false)
     private Integer age;
 
+    @Column(name = "birthday")
+    private Date birthday;
+
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> authorities;
 
     @OneToOne
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToMany
+    @OneToMany(mappedBy = "requested", fetch = FetchType.LAZY)
     private Set<FriendRequest> friendRequests;
 
-    @OneToMany
+    @OneToMany(mappedBy = "requester", fetch = FetchType.LAZY)
+    private Set<FriendRequest> friendRequested;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Image> images;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "connections")
     private Set<User> friends;
 
     @ManyToMany
+    @JoinTable(name = "users_friends",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "friend_id")})
+    private Set<User> connections;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "blocked_users",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "blocked_user_id")})
     private Set<User> blockedUsers;
+
+    @ManyToMany
+    private Set<User> blockedBy;
 
     @Column(name = "register_date")
     private Date registerDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "poster", fetch = FetchType.LAZY)
     private Set<Post> posts;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "likes", fetch = FetchType.LAZY)
     private Set<Post> likedPosts;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "shares", fetch = FetchType.LAZY)
     private Set<Post> sharedPosts;
-
-    @OneToMany
-    private Set<Post> comments;
 
     public User() {
 
@@ -134,14 +153,6 @@ public class User implements UserDetails {
         this.sharedPosts = sharedPosts;
     }
 
-    public Set<Post> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Post> comments) {
-        this.comments = comments;
-    }
-
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
@@ -208,6 +219,38 @@ public class User implements UserDetails {
 
     public Set<Post> getPosts() {
         return posts;
+    }
+
+    public Set<FriendRequest> getFriendRequested() {
+        return friendRequested;
+    }
+
+    public void setFriendRequested(Set<FriendRequest> friendRequested) {
+        this.friendRequested = friendRequested;
+    }
+
+    public Set<User> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(Set<User> connections) {
+        this.connections = connections;
+    }
+
+    public Set<User> getBlockedBy() {
+        return blockedBy;
+    }
+
+    public void setBlockedBy(Set<User> blockedBy) {
+        this.blockedBy = blockedBy;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     @Override

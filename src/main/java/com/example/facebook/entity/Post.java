@@ -1,7 +1,7 @@
 package com.example.facebook.entity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -19,18 +19,24 @@ public class Post {
     private String post;
 
     @Column(name = "post_date", nullable = false)
-    private LocalDateTime postDate;
+    private Date postDate;
 
     @ManyToOne(targetEntity = Post.class, optional = false)
     private Post parent;
 
     @ManyToMany
+    @JoinTable(name = "post_users",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
     private Set<User> likes;
 
     @ManyToMany
+    @JoinTable(name = "post_users",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
     private Set<User> shares;
 
-    @OneToMany
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     private Set<Post> comments;
 
     public Post() {
@@ -60,11 +66,11 @@ public class Post {
         this.post = post;
     }
 
-    public LocalDateTime getPostDate() {
+    public Date getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(LocalDateTime postDate) {
+    public void setPostDate(Date postDate) {
         this.postDate = postDate;
     }
 

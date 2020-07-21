@@ -25,10 +25,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()
-                    .antMatchers("/", "/register").permitAll()
+                    .antMatchers("/", "/register","/css/**","/login","/upload").permitAll()
                     .anyRequest().authenticated()
                 .and()
-                    .formLogin().loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/profile", true).permitAll()
+                .formLogin().loginPage("/login").defaultSuccessUrl("/profile", true).permitAll()
                     .usernameParameter("email")
                     .passwordParameter("password")
                 .and()

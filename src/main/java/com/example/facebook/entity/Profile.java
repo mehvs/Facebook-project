@@ -19,6 +19,7 @@ public class Profile {
     private Boolean isFullNamePublic;
 
     @OneToOne(targetEntity = Image.class)
+    @JoinColumn(name = "image_id")
     private Image profileImage;
 
     public Profile() {
