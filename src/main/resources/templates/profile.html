@@ -2,9 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Profile</title>
+    <title>Profile</title>
+
+    <link rel="stylesheet" href="profile.css">
 </head>
 <body>
-Wellcome to Facebook!!
+
+<div>
+    <div class="navbar">
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about">About</a></li>
+        <input type="text" placeholder="Search..">
+    </ul>
+    </div>
+    <div class="background-color">
+    <div class="profile-image-container">
+        <img src="ducks-mallard.jpg" class="back-picture">
+        <img src="secondDuck.jpg" class="profile-picture">
+    </div>
+    </div>
+    <div class="information-form">
+    <div class="user-info">
+        <ul>
+        <li class="info-format">
+            <h3>Name:</h3>
+            <h5>Radina Mihaylova</h5>
+            <h3>Birthday:</h3>
+            <h5>01/01/2004</h5>
+        </li>
+        </ul>
+    </div>
+    <div>
+    <div class="user-info">
+        <div class="pictures">
+        <h3>pictures</h3>
+        <ul>
+            <li>
+                <img src="">
+
+            </li>
+            <li>
+                <img src="">
+
+            </li>
+        </ul>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="post">
+        <div class="post-info">
+            <img src="secondDuck.jpg" class="profile">
+            <h3 class="name-position">name</h3>
+            <h5 class="name-position">date</h5>
+            <h4>description</h4>
+        </div>
+        <ul class="post-images">
+            <li>
+                <img src="" class="image-url">
+            </li>
+        </ul>
+        <div class="buttons">
+            <div class="like-button">
+            <form method="post" action="/like" class="like">
+                <input type="submit" value="like"/>
+            </form>
+            </div>
+            <div class="comment-button">
+            <form method="post" action="/comment" class="comment-button">
+                <input type="submit" value="comment">
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
