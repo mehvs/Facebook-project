@@ -115,8 +115,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public UserDetails loadUserByPass(String password) throws PasswordExpiredException {
         User user = userRepository.findFirstByPassword(password).orElseThrow(() -> new IllegalArgumentException("Invalid password"));
-
-
         return user;
     }
 }

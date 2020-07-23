@@ -3,6 +3,7 @@ package com.example.facebook.controller;
 import com.example.facebook.dto.ChangeProfileDetailsDTO;
 import com.example.facebook.dto.RegisterDTO;
 import com.example.facebook.service.contract.UserService;
+import com.example.facebook.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,10 @@ import java.security.Principal;
 @Controller
 public class UserController extends BaseController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -31,8 +32,10 @@ public class UserController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    public ModelAndView profile(Principal principal) {
-        return send("profile", "username", principal.getName());
+    public ModelAndView profile(Principal principal, ModelAndView modelAndView) {
+        modelAndView.setViewName("profile.html");
+        modelAndView.addObject("user", userService.getUser(principal.getName()));
+        return modelAndView;
     }
 
     @PreAuthorize("!isAuthenticated()")
