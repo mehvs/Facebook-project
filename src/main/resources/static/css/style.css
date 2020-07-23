@@ -14,9 +14,10 @@ a{color:inherit;text-decoration:none}
     height: 600px;
     text-align: center;
     margin: 0 auto;
-    padding:90px 70px 50px 70px;
-    background-color: rgba(44, 62, 80,0.7);
-    margin-top: 40px;
+    padding:30px 70px 100px 70px;
+    background-color: #fcfcfc;
+    margin-top: 30px;
+    border: 5px outset;
 }
 
 .login-html .sign-up-htm{
@@ -30,19 +31,17 @@ a{color:inherit;text-decoration:none}
 .login-form .group .check{
     display:none;
 }
-.login-html .tab,
 .login-form .group .label,
 .login-form .group .button{
     text-transform:uppercase;
 }
 .login-html .tab{
     font-size:22px;
-    padding-bottom:5px;
-    margin:0 15px 10px 0;
-    display:inline-block;
     border-bottom:2px solid transparent;
-    color:darkblue;
+    color:blue;
+    position: relative;
 }
+
 .login-form{
     min-height:345px;
     position:relative;
@@ -56,13 +55,14 @@ a{color:inherit;text-decoration:none}
     width:100%;
     color:#fff;
     display:block;
+    position: relative;
 }
 .login-form .group .input,
 .login-form .group .button{
-    border:none;
     padding:15px 20px;
     border-radius:25px;
-    background:rgba(255,255,255,.1);
+    background:white;
+    border: 1px black solid;
 }
 .login-form .group input[data-type="password"]{
     -webkit-text-security:circle;
@@ -86,5 +86,5 @@ a{color:inherit;text-decoration:none}
 .hr{
     height:2px;
     margin:60px 0 50px 0;
-    background:rgba(255,255,255,.2);
+    background:blue;
 }
