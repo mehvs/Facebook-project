@@ -30,6 +30,12 @@ public class UserController extends BaseController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("/")
+    public ModelAndView loginProfile() {
+        return send("profile");
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public ModelAndView profile(Principal principal) {
         return send("profile", "username", principal.getName());
