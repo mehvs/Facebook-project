@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -179,6 +176,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public List<User> findUsersByName(String name) {
+        List<User> users = userRepository.getAllByName(name);
+        return users;
     }
 
 }
