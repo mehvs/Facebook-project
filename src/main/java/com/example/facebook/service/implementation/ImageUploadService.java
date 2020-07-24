@@ -3,10 +3,12 @@ package com.example.facebook.service.implementation;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.WriteMode;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.example.facebook.dto.ImageUploadDTO;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.UserRepository;
+import com.example.facebook.service.contract.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,14 +26,18 @@ import java.nio.file.Paths;
 public class ImageUploadService {
 
     //TODO: need to set token from dropbox app here.
-    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAPNsx08GNIwvxsmRPwSCNTy1J-9-jO4i23tmF2Mo7EdBO";
+    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAQYcFANuWvndi6GMdoxoOCOFLWwah0ZAeT2AQQKdlQzdb";
     private DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
     private DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
     private final UserRepository userRepository;
+    private final UserService userService;
+
 
     @Autowired
-    public ImageUploadService(UserRepository userRepository) {
+    public ImageUploadService(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+
+        this.userService = userService;
     }
 
 
@@ -48,37 +54,30 @@ public class ImageUploadService {
     }
 
     public void setProfilePicture(ImageUploadDTO imageUploadDTO) throws DbxException, IOException {
-
+        String path = "/" + userService.getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage());
         InputStream in = imageUploadDTO.getImage().getInputStream();
+        try {
 
-        client.files().uploadBuilder("/" + getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage())).uploadAndFinish(in);
+            client.files().deleteV2(path);
+
+        } catch(Exception e) {
+
+            System.out.println("File does not exist ");
+
+        }
+
+        client.files().uploadBuilder(path).withMode(WriteMode.OVERWRITE).uploadAndFinish(in);
 
         setProfilePictureUrl(imageUploadDTO);
 
-    }
-
-    public String getCurrentLoggedUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
-
-        if (principal instanceof UserDetails) {
-
-            username = ((UserDetails) principal).getUsername();
-
-        } else {
-
-            username = principal.toString();
-
-        }
-        System.out.println(username);
-        return username;
     }
 
     public String getDirectLink(ImageUploadDTO imageUploadDTO) {
         String url = "";
 
         try {
-            SharedLinkMetadata sharedLinkMetadata = client.sharing().createSharedLinkWithSettings("/" + getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage()));
+            SharedLinkMetadata sharedLinkMetadata = client.sharing()
+                    .createSharedLinkWithSettings("/" + userService.getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage()));
             url = sharedLinkMetadata.getUrl();
         } catch (DbxException ex) {
             System.out.println(ex);
@@ -89,19 +88,16 @@ public class ImageUploadService {
     }
 
     public User findByEmail() {
-        User user = userRepository.findFirstByEmail(getCurrentLoggedUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found" + getCurrentLoggedUsername()));
+        User user = userRepository.findFirstByEmail(userService.getCurrentLoggedUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found" + userService.getCurrentLoggedUsername()));
         ;
         return user;
     }
 
     public void setProfilePictureUrl(ImageUploadDTO imageUploadDTO) {
-
-        String testUrl = "http://www.pngmart.com/files/4/Love-Transparent-PNG.png";
         User user = findByEmail();
         user.getProfile().getProfileImage().setUrl(getDirectLink(imageUploadDTO));
         userRepository.save(findByEmail());
-
     }
 
 }

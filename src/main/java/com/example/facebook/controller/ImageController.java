@@ -44,6 +44,6 @@ public class ImageController extends BaseController {
     @PostMapping("/changePicture")
     public ModelAndView changeProfilePicture(@ModelAttribute ImageUploadDTO imageUploadDTO) throws IOException, DbxException {
         imageUploadService.setProfilePicture(imageUploadDTO);
-        return send("changePicture");
+        return redirect("profile");
     }
 }
