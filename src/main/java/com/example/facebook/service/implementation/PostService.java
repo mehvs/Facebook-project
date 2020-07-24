@@ -4,18 +4,19 @@ import com.example.facebook.entity.Post;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.PostRepository;
 import com.example.facebook.repository.UserRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.example.facebook.service.contract.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, UserService userService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
 
@@ -29,32 +30,15 @@ public class PostService {
     public void like() {
         //TODO: Need to set proper id here.
         Post post = findPostById(2L);
-        User user = userRepository.findFirstByEmail(getCurrentLoggedUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found" + getCurrentLoggedUsername()));
+        User user = userRepository.findFirstByEmail(userService.getCurrentLoggedUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found" + userService.getCurrentLoggedUsername()));
         ;
-
-
 
         post.getLikes().add(user);
         postRepository.save(post);
     }
 
-    public String getCurrentLoggedUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
 
-        if (principal instanceof UserDetails) {
-
-            username = ((UserDetails) principal).getUsername();
-
-        } else {
-
-            username = principal.toString();
-
-        }
-
-        return username;
-    }
 
 
 }

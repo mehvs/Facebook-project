@@ -4,6 +4,7 @@ import com.example.facebook.dto.ChangeProfileDetailsDTO;
 import com.example.facebook.dto.RegisterDTO;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.UserRepository;
+import com.example.facebook.service.implementation.ImageUploadService;
 import com.example.facebook.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,11 +22,13 @@ public class UserController extends BaseController {
 
     private final UserServiceImpl userService;
     private final UserRepository userRepository;
+    private final ImageUploadService imageUploadService;
 
     @Autowired
-    public UserController(UserServiceImpl userService, UserRepository userRepository) {
+    public UserController(UserServiceImpl userService, UserRepository userRepository, ImageUploadService imageUploadService) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.imageUploadService = imageUploadService;
     }
 
     @PreAuthorize("!isAuthenticated()")
@@ -56,16 +59,16 @@ public class UserController extends BaseController {
             return new ModelAndView("errors/register-error");
         }
 
-        return new ModelAndView("profile");
+        return send("profile");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    public ModelAndView profile(@AuthenticationPrincipal User user) {
-        String fullName = user.getFirstName() + " " + user.getLastName();
-
+    public ModelAndView profile() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("fullName", fullName);
+        modelAndView.addObject("profile");
+        User user = imageUploadService.findByEmail();
+        user.getProfile().getProfileImage().getUrl();
         modelAndView.addObject("profilePicture", user.getProfile().getProfileImage().getUrl());
 
         return modelAndView;
