@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 public class ImageUploadService {
 
     //TODO: need to set token from dropbox app here.
-    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAOSu2Vn978-kyeypKtJzCfHXkn1mIM9mbvSWOPkF5tfpt";
+    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAPNsx08GNIwvxsmRPwSCNTy1J-9-jO4i23tmF2Mo7EdBO";
     private DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
     private DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
     private final UserRepository userRepository;
@@ -47,13 +47,13 @@ public class ImageUploadService {
         return fileName.toString();
     }
 
-    public void setProfilePicture(ImageUploadDTO imageUploadDTO, User user) throws DbxException, IOException {
+    public void setProfilePicture(ImageUploadDTO imageUploadDTO) throws DbxException, IOException {
 
         InputStream in = imageUploadDTO.getImage().getInputStream();
 
         client.files().uploadBuilder("/" + getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage())).uploadAndFinish(in);
 
-        setProfilePictureUrl(imageUploadDTO, user);
+        setProfilePictureUrl(imageUploadDTO);
 
     }
 
@@ -92,16 +92,15 @@ public class ImageUploadService {
         User user = userRepository.findFirstByEmail(getCurrentLoggedUsername())
                 .orElseThrow(() -> new IllegalArgumentException("User not found" + getCurrentLoggedUsername()));
         ;
-
         return user;
     }
 
-    public void setProfilePictureUrl(ImageUploadDTO imageUploadDTO, User user) throws DbxException {
+    public void setProfilePictureUrl(ImageUploadDTO imageUploadDTO) {
 
-        //String testUrl = "http://www.pngmart.com/files/4/Love-Transparent-PNG.png";
-
+        String testUrl = "http://www.pngmart.com/files/4/Love-Transparent-PNG.png";
+        User user = findByEmail();
         user.getProfile().getProfileImage().setUrl(getDirectLink(imageUploadDTO));
-        userRepository.save(user);
+        userRepository.save(findByEmail());
 
     }
 
