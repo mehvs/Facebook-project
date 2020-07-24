@@ -37,16 +37,16 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         }
 
         friendRequestRepository.deleteFriendRequestByRequesterAndRequested(requester, requested);
-       /* requester.getUserFriends().add(requested);
-        requested.getUserFriends().add(requester);*/
+        requester.getFriends().add(requested);
+        requested.getFriends().add(requester);
         userRepository.save(requester);
         userRepository.save(requested);
     }
 
     @Override
-    public void sendFriendRequest(User requester, Long receiverId) throws InvalidUserException {
+    public void sendFriendRequest(User requester, Long requestedId) throws InvalidUserException {
         FriendRequest friendRequest = new FriendRequest();
-        User receiver = findUser(receiverId);
+        User receiver = findUser(requestedId);
         friendRequest.setRequester(requester);
         friendRequest.setRequested(receiver);
         friendRequestRepository.save(friendRequest);
