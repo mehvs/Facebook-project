@@ -86,21 +86,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findFirstByEmail(email).
                 orElseThrow(() -> new IllegalArgumentException("User not found; with username: " + email));
 
+        if (changeProfileDetailsDTO.getCurrentPassword() != null) {
+            if (passwordEncoder.matches(changeProfileDetailsDTO.getCurrentPassword(), user.getPassword())) {
+                throw new IllegalArgumentException("Password is incorrect!");
+            } else {
+                if (changeProfileDetailsDTO.getNewPassword() != null
+                        && !changeProfileDetailsDTO.getNewPassword().equals("")
+                        && changeProfileDetailsDTO.getNewPassword().equals(changeProfileDetailsDTO.getNewPasswordRepeat())) {
+                    user.setPassword(passwordEncoder.encode(changeProfileDetailsDTO.getNewPassword()));
+                }
 
-        if (!changeProfileDetailsDTO.getCurrentPassword().equals(user.getPassword() )) {
-            throw new IllegalArgumentException("Password is incorrect!");
-        }else{
-            if (changeProfileDetailsDTO.getNewPassword() != null
-                    && !changeProfileDetailsDTO.getNewPassword().equals("")
-                    && changeProfileDetailsDTO.getNewPassword().equals(changeProfileDetailsDTO.getNewPasswordRepeat())) {
-                user.setPassword(passwordEncoder.encode(changeProfileDetailsDTO.getNewPassword()));
             }
-
         }
 
         user.setFirstName(changeProfileDetailsDTO.getFirstName());
         user.setLastName(changeProfileDetailsDTO.getLastName());
-        user.setAge(changeProfileDetailsDTO.getAge());
         user.setPassword(passwordEncoder.encode(changeProfileDetailsDTO.getNewPassword()));
         user.setEmail(changeProfileDetailsDTO.getEmail());
 
