@@ -1,8 +1,11 @@
 package com.example.facebook.controller;
 
+import com.dropbox.core.DbxException;
 import com.example.facebook.dto.ImageUploadDTO;
+import com.example.facebook.entity.User;
 import com.example.facebook.service.implementation.ImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,5 +34,16 @@ public class ImageController extends BaseController {
     public ModelAndView imageUpload(@ModelAttribute ImageUploadDTO imageUploadDTO) throws IOException {
         imageUploadService.uploadImage(imageUploadDTO.getImage());
         return redirect("/");
+    }
+
+    @GetMapping("/changePicture")
+    public ModelAndView changeProfilePicture()  {
+        return send("changePicture");
+    }
+
+    @PostMapping("/changePicture")
+    public ModelAndView changeProfilePicture(@ModelAttribute ImageUploadDTO imageUploadDTO, @AuthenticationPrincipal User user) throws IOException, DbxException {
+        imageUploadService.setProfilePicture(imageUploadDTO, user);
+        return send("changePicture");
     }
 }

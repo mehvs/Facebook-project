@@ -5,10 +5,11 @@ import com.example.facebook.dto.RegisterDTO;
 import com.example.facebook.entity.Role;
 import com.example.facebook.entity.User;
 import com.example.facebook.repository.UserRepository;
+import com.example.facebook.service.contract.ImageService;
+import com.example.facebook.service.contract.ProfileService;
 import com.example.facebook.service.contract.UserService;
 import com.mysql.cj.exceptions.PasswordExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,15 +28,20 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private static final String PROFILE_DEFAULT_PICTURE = "https://directory.illinois.edu/webservices/public/ds/profile.png";
     private final RoleServiceImpl roleService;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ProfileService profileService;
+    private final ImageService imageService;
 
     @Autowired
-    public UserServiceImpl(RoleServiceImpl roleService, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleServiceImpl roleService, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, ProfileService profileService, ImageService imageService) {
         this.roleService = roleService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.profileService = profileService;
+        this.imageService = imageService;
     }
 
 
@@ -55,7 +61,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
 
-//        user.getProfile().getProfileImage().setUrl("https://www.pinpng.com/pngs/m/341-3415688_no-avatar-png-transparent-png.png");
 
         user.setActive(true);
         user.setRegisterDate(new Date());
@@ -65,9 +70,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roles.add(roleService.getUserRole());
         user.setAuthorities(roles);
 
+        userRepository.save(user);
+
+        setDefaultProfilePicture(user);
 
         userRepository.save(user);
+
+
         return user;
+    }
+
+    public void setDefaultProfilePicture(User user){
+
+        user.setProfile(profileService.create());
+        user.getProfile().setProfileImage(imageService.create(user));
+        user.getProfile().getProfileImage().setUrl(PROFILE_DEFAULT_PICTURE);
+        user.getProfile().setFullName(user.getFirstName() + " " + user.getLastName());
+
+        userRepository.save(user);
+
     }
 
     @Override
