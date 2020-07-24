@@ -33,6 +33,9 @@ public class User implements UserDetails {
     @Column(name = "birthday")
     private Date birthday;
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
@@ -251,6 +254,14 @@ public class User implements UserDetails {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 
     @Override

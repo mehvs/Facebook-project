@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
 
-        user.getProfile().getProfileImage().setUrl("https://www.pinpng.com/pngs/m/341-3415688_no-avatar-png-transparent-png.png");
+//        user.getProfile().getProfileImage().setUrl("https://www.pinpng.com/pngs/m/341-3415688_no-avatar-png-transparent-png.png");
 
         user.setActive(true);
         user.setRegisterDate(new Date());
@@ -123,6 +124,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         return user;
+    }
+
+    @Override
+    public Optional findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional findUserByResetToken(String resetToken) {
+        return userRepository.findByResetToken(resetToken);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
 }
