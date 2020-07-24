@@ -10,33 +10,28 @@
 <div class="login-wrap">
     <div class="login-html">
         <input name="tab" class="sign-up">
-        <label class="tab">Sign Up</label>
+        <label class="tab">Change profile details</label>
         <div class="login-form">
 
-            <form class="sign-up-htm" method="post" action="/register">
+            <form class="sign-up-htm" method="post" action="/change-profile-details">
                 <div class="group">
-
                     <label class="label">Name</label>
                     <input name="firstName" type="text" class="input" th:value="${user.getFirstName()}">
                     <label class="label">Last name</label>
-                    <input name="lastName" type="text" class="input" th:value="${user.lastName}">
+                    <input name="lastName" type="text" class="input" th:value="${user.getLastName()}">
                     <label class="label">Email</label>
-                    <input name="email" type="text" class="input" value="mail">
-                    <label class="label">Age</label>
-                    <input name="age" type="number" class="input">
-                    <label class="label">Birthday</label>
-                    <input name="birthday" type="text" class="input">
+                    <input name="email" type="text" class="input" th:value="${user.getEmail()}">
                 </div>
                 <div class="group">
                     <label class="label">Password</label>
-                    <input name="password" type="password" class="input">
+                    <input name="currentPassword" type="password" class="input">
+                    <label class="label">New password</label>
+                    <input name="newPassword" type="password" class="input">
+                    <label class="label">Repeat new password</label>
+                    <input name="newPasswordRepeat" type="password" class="input">
                 </div>
                 <div class="group">
-                    <label class="label">Confirm Password</label>
-                    <input type="password" name="passwordRepeat" class="input">
-                </div>
-                <div class="group">
-                    <input type="submit" class="button" value="Sign Up">
+                    <input type="submit" class="button" value="Confirm changes">
                 </div>
                 <div class="hr"></div>
             </form>
