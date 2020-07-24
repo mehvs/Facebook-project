@@ -60,6 +60,18 @@ public class UserController extends BaseController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/profile")
+    public ModelAndView profile(@AuthenticationPrincipal User user) {
+        String fullName = user.getFirstName() + " " + user.getLastName();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("fullName", fullName);
+        modelAndView.addObject("profilePicture", user.getProfile().getProfileImage().getUrl());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/change-profile-details")
     public ModelAndView changeProfileDetails(@ModelAttribute ChangeProfileDetailsDTO changeProfileDetailsDTO,@AuthenticationPrincipal User user) {
 

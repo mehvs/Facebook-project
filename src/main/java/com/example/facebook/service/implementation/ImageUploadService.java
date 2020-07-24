@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 public class ImageUploadService {
 
     //TODO: need to set token from dropbox app here.
-    private static final String ACCESS_TOKEN = " ";
+    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAOSu2Vn978-kyeypKtJzCfHXkn1mIM9mbvSWOPkF5tfpt";
     private DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
     private DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
     private final UserRepository userRepository;
@@ -47,13 +47,13 @@ public class ImageUploadService {
         return fileName.toString();
     }
 
-    public void setProfilePicture(ImageUploadDTO imageUploadDTO) throws DbxException, IOException {
+    public void setProfilePicture(ImageUploadDTO imageUploadDTO, User user) throws DbxException, IOException {
 
         InputStream in = imageUploadDTO.getImage().getInputStream();
 
         client.files().uploadBuilder("/" + getCurrentLoggedUsername() + "/" + getFileName(imageUploadDTO.getImage())).uploadAndFinish(in);
 
-        setProfilePictureUrl(imageUploadDTO);
+        setProfilePictureUrl(imageUploadDTO, user);
 
     }
 
@@ -96,12 +96,13 @@ public class ImageUploadService {
         return user;
     }
 
-    public void setProfilePictureUrl(ImageUploadDTO imageUploadDTO) {
-        User user = findByEmail();
+    public void setProfilePictureUrl(ImageUploadDTO imageUploadDTO, User user) throws DbxException {
+
+        //String testUrl = "http://www.pngmart.com/files/4/Love-Transparent-PNG.png";
 
         user.getProfile().getProfileImage().setUrl(getDirectLink(imageUploadDTO));
-
         userRepository.save(user);
+
     }
 
 }
