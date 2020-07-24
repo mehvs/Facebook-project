@@ -26,13 +26,13 @@ public class ProfileController extends BaseController{
     public ModelAndView setProfilePage() {
         return send("profile");
     }
-
+/*
     @PostMapping("/profile")
     public ModelAndView setProfilePicture(@ModelAttribute ImageUploadDTO imageUploadDTO) throws IOException, DbxException {
-        imageUploadService.uploadImage(imageUploadDTO.getImage());
+       /imageUploadService.uploadImage(imageUploadDTO.getImage());
         imageUploadService.setProfilePicture(imageUploadDTO);
         return redirect("profile");
-    }
 
+    }*/
 
 }

@@ -26,6 +26,24 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
+    public void acceptFriendRequest(Long requesterId, User receiver) throws InvalidUserException{
+        User requester = findUser(requesterId);
+        accept(requester,receiver);
+    }
+
+    private void accept(User requester, User requested) throws InvalidUserException{
+        if (friendRequestRepository.findByRequestedAndRequester(requester, requested) == null) {
+            throw new InvalidUserException("Something went wrong :/" + "Friend request is not found");
+        }
+
+        friendRequestRepository.deleteFriendRequestByRequesterAndRequested(requester, requested);
+       /* requester.getUserFriends().add(requested);
+        requested.getUserFriends().add(requester);*/
+        userRepository.save(requester);
+        userRepository.save(requested);
+    }
+
+    @Override
     public void sendFriendRequest(User requester, Long receiverId) throws InvalidUserException {
         FriendRequest friendRequest = new FriendRequest();
         User receiver = findUser(receiverId);

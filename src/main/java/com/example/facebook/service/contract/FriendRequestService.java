@@ -5,4 +5,5 @@ import com.example.facebook.exception.InvalidUserException;
 
 public interface FriendRequestService {
     void sendFriendRequest(User requester, Long receiverId) throws InvalidUserException;
+    void acceptFriendRequest(Long requesterId, User receiver) throws InvalidUserException;
 }

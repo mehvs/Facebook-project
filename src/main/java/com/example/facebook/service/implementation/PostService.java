@@ -17,16 +17,14 @@ public class PostService {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
-
-
-    public Post findPostById(Long id) {
+    
+   public Post findPostById(Long id) {
         Post post = postRepository.findFirstById(id).orElseThrow(() -> new IllegalArgumentException("Post id not found" + id));
-        ;
 
         return post;
     }
 
-    public void like() {
+   public void like() {
         //TODO: Need to set proper id here.
         Post post = findPostById(2L);
         User user = userRepository.findFirstByEmail(getCurrentLoggedUsername())

@@ -29,4 +29,12 @@ public class FriendRequestController extends BaseController{
         friendRequestService.sendFriendRequest(userService.getUser(principal.getName()),userDTO.getUserId());
         return redirect("/"+userDTO.getUserId());
     }
+
+    @PostMapping("/acceptRequest")
+    public ModelAndView acceptFriendRequest(@ModelAttribute UserDTO userIdDTO, Principal principal) throws InvalidUserException{
+        friendRequestService.acceptFriendRequest(userIdDTO.getUserId(),userService.getUser(principal.getName()));
+        return redirect("/" +userIdDTO.getUserId());
+    }
+
+
 }
