@@ -25,6 +25,29 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         return userRepository.findById(id).orElseThrow(() -> new InvalidUserException("User not found"));
     }
 
+
+
+    @Override
+    public void declineFriendRequest(Long requesterId, User requested) throws InvalidUserException{
+        User requester = findUser(requesterId);
+        friendRequestRepository.deleteFriendRequestByRequesterAndRequested(requester, requested);
+    }
+
+    @Override
+    public void removeFriend(User user, Long userId) throws InvalidUserException{
+        User removedUser = findUser(userId);
+        removedUser.getFriends().remove(user);
+        user.getFriends().remove(removedUser);
+        userRepository.save(user);
+        userRepository.save(removedUser);
+    }
+
+    @Override
+    public void cancelFriendRequest(User requester, Long requestedId) throws InvalidUserException{
+        User requested = findUser(requestedId);
+        friendRequestRepository.deleteFriendRequestByRequesterAndRequested(requester, requested);
+    }
+
     @Override
     public void acceptFriendRequest(Long requesterId, User receiver) throws InvalidUserException{
         User requester = findUser(requesterId);
