@@ -14,7 +14,8 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#news">News</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="/change-profile-details">Change details</a></li>
+            <li><a href="/logout">Logout</a></li>
             <a href="/search"><input type="text" placeholder="Search.."></a>
         </ul>
     </div>
@@ -29,9 +30,9 @@
             <ul>
                 <li class="info-format">
                     <h3>Name:</h3>
-                    <h5></h5>
+                    <h5 th:text="${firstName} + ' ' + ${lastName}"></h5>
                     <h3>Birthday:</h3>
-                    <h5>01/01/2004</h5>
+                    <h5 th:text="${birthday}"></h5>
                 </li>
             </ul>
         </div>

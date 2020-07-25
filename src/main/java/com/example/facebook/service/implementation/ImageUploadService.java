@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 public class ImageUploadService {
 
     //TODO: need to set token from dropbox app here.
-    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAWKNvq-1_h6QprXxNrc3YEnnIRTo1YWh7RR8yBLXchuBg";
+    private static final String ACCESS_TOKEN = "9KvQou2I60AAAAAAAAAAXBRpTiQMc07Cz8CQYOpg4KCoKeAIJ3vAywKrSbfrlSFT";
     private DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
     private DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
     private final UserRepository userRepository;

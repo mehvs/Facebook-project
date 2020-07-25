@@ -70,7 +70,9 @@ public class UserController extends BaseController {
         User user = imageUploadService.findByEmail();
         user.getProfile().getProfileImage().getUrl();
         modelAndView.addObject("profilePicture", user.getProfile().getProfileImage().getUrl());
-
+        modelAndView.addObject("firstName", user.getFirstName());
+        modelAndView.addObject("lastName", user.getLastName());
+        modelAndView.addObject("birthday", user.getBirthday());
         return modelAndView;
     }
 
